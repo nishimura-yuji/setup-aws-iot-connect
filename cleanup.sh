@@ -22,7 +22,7 @@ readonly PUBLIC_KEY=${BASE_DIR}/public-${1}.key
 #----------------------------------------------------------
 # ローカルファイル削除
 #----------------------------------------------------------
-rm -f ${CERTIFICATE_PEM} ${PRIVATE_KEY} ${PRIVATE_KEY}
+rm -f ${CERTIFICATE_PEM} ${PRIVATE_KEY} ${PUBLIC_KEY}
 
 #----------------------------------------------------------
 # AWS IoTのリソース削除
