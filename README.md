@@ -4,4 +4,8 @@ brew install mosquitto
 
 after
 
-sh ./setup-connect-aws-iot.sh
+sh ./connect-aws-iot.sh hoge
+
+===
+
+sh ./cleanup.sh hoge
