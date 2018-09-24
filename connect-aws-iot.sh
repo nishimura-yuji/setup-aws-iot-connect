@@ -5,7 +5,7 @@
 #----------------------------------------------------------
 if [ "${1}" = "" ]
 then
-    echo -e "Error:no argument.  \nex) setup-connect-aws-iot.sh <thing name>"
+    echo -e "Error:no argument.  \nex) connect-aws-iot.sh <thing name>"
     exit
 fi
 
