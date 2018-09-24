@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 #----------------------------------------------------------
 # 引数があるか確認
 #----------------------------------------------------------
-if [ "$1" = "" ]
+if [ "${1}" = "" ]
 then
     echo -e "Error:no argument.  \nex) setup-connect-aws-iot.sh <thing name>"
     exit
@@ -12,7 +12,7 @@ fi
 #----------------------------------------------------------
 # 変数設定
 #----------------------------------------------------------
-cd `dirname $0`
+cd `dirname ${0}`
 
 readonly BASE_DIR='.'
 
@@ -28,7 +28,6 @@ readonly ROOT_CA_DL_LINK='https://www.symantec.com/content/en/us/enterprise/veri
 #  root CA 証明書を確認:ないとき取得
 #----------------------------------------------------------
 if [ ! -e ${ROOT_CA_PEM} ]; then
-    # echo -n "Error: CAroot.pem or CAroot.key or rrootCAoot.pem not exists."
     wget ${ROOT_CA_DL_LINK} -O ${ROOT_CA_PEM} > /dev/null 2>&1
 fi
 
@@ -38,20 +37,20 @@ fi
 #----------------------------------------------------------
 if [ ! -e ${CERTIFICATE_PEM} ] || [ ! -e ${PRIVATE_KEY} ] || [ ! -e ${PUBLIC_KEY} ]; then
     # echo -n "Pass: Certificate Files Already Exists."
-
+    
     # {thing name}-policy としてのIAM Policyを作成
-    aws iot create-policy --policy-name ${1}-policy --policy-document '{"Version": "2012-10-17","Statement": [{"Effect": "Allow","Action": "iot:*","Resource": "*"}]}'
-
+    aws iot create-policy --policy-name ${1}-policy --policy-document '{"Version": "2012-10-17","Statement": [{"Effect": "Allow","Action": "iot:*","Resource": "*"}]}' > /dev/null 2>&1
+    
     # thing 作成
-    aws iot create-thing --thing-name ${1}
-
+    aws iot create-thing --thing-name ${1} > /dev/null 2>&1
+    
     # 証明書と鍵を作成
     ARN_OF_CERTIFICATE=`aws iot create-keys-and-certificate --set-as-active --certificate-pem-outfile ${CERTIFICATE_PEM} --private-key-outfile ${PRIVATE_KEY} --public-key-outfile ${PUBLIC_KEY} --query "certificateArn"`
     echo ${ARN_OF_CERTIFICATE}
-
+    
     # Policyと証明書を紐付け
     eval aws iot attach-principal-policy --policy-name ${1}-policy --principal ${ARN_OF_CERTIFICATE}
-
+    
     # Thingと証明書を紐付け
     eval aws iot attach-thing-principal  --thing-name ${1} --principal ${ARN_OF_CERTIFICATE}
 fi
