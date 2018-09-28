@@ -36,7 +36,6 @@ fi
 #  AWS IoTの設定:証明書と鍵がないとき作成
 #----------------------------------------------------------
 if [ ! -e ${CERTIFICATE_PEM} ] || [ ! -e ${PRIVATE_KEY} ] || [ ! -e ${PUBLIC_KEY} ]; then
-    # echo -n "Pass: Certificate Files Already Exists."
     
     # {thing name}-policy としてのIAM Policyを作成
     aws iot create-policy --policy-name ${1}-policy --policy-document '{"Version": "2012-10-17","Statement": [{"Effect": "Allow","Action": "iot:*","Resource": "*"}]}' > /dev/null 2>&1
