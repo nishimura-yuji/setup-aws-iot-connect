@@ -1,3 +1,3 @@
 {
-    "test": "${aws:iot:s3-presigned-url:https://s3.amazonaws.com/bucket/object}"
+    "test": "${aws:iot:s3-presigned-url:https://s3.amazonaws.com/test-bucket-mac/test-patch.py}"
 }
